@@ -188,7 +188,7 @@ export function RepairBookingForm({ selectedService }: { selectedService?: strin
 
           {/* Custom File Upload Area */}
           <div className="space-y-2 pt-2">
-            <FormLabel className="text-charcoal font-semibold">Damage Photos (Max 3)</FormLabel>
+            <label className="text-charcoal font-semibold text-sm">Damage Photos (Max 3)</label>
             <div 
               className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center transition-colors ${dragActive ? 'border-neon bg-neon/5' : 'border-gray-200 bg-gray-50'}`}
               onDragEnter={handleDrag}
