@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------------
+// 1. Product & Division Management
+// ------------------------------------------------------
+model Product {
+  id            String             @id @default(cuid())
+  name          String
+  basePrice     Float
+  category      String             // e.g., "Leather Ball Bats", "Gloves"
+  image         String?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  
+  // Dynamic Specifications Relationship
+  specifications Specification[]
+}
+
+model Specification {
+  id        String   @id @default(cuid())
+  key       String   // e.g., "Weight", "Edge"
+  value     String   // e.g., "1140g - 1180g", "38mm"
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+// ------------------------------------------------------
+// 2. Knocking Service Configuration
+// ------------------------------------------------------
+model KnockingTier {
+  id        String            @id @default(cuid())
+  name      String            // e.g., "Standard Knocking", "Pro Match-Ready"
+  price     Float
+  features  KnockingFeature[]
+}
+
+model KnockingFeature {
+  id             String       @id @default(cuid())
+  description    String       // e.g., "5,000 Machine Strokes", "Linseed Oiling"
+  knockingTierId String
+  knockingTier   KnockingTier @relation(fields: [knockingTierId], references: [id], onDelete: Cascade)
+}
+
+// ------------------------------------------------------
+// 3. Visual Repair Menu
+// ------------------------------------------------------
+model RepairService {
+  id             String   @id @default(cuid())
+  name           String   // e.g., "Toe Binding & Repair"
+  turnaroundTime String   // e.g., "2-3 DAYS"
+  basePrice      Float
+  imageReference String?
+}
+
+// ------------------------------------------------------
+// 4. Social Media
+// ------------------------------------------------------
+model InstagramPost {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  mediaType String   @default("image")
+  postUrl   String
+  createdAt DateTime @default(now())
+}

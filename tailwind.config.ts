@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss"
 
 const config: Config = {
+  darkMode: ["class"],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -13,7 +14,7 @@ const config: Config = {
         foreground: "#111827",
         offwhite: "#F9FAFB",
         charcoal: "#111827",
-        neon: "#D4FF00",
+        neon: "#D4AF37",
       },
       fontFamily: {
         serif: ["var(--font-playfair)", "serif"],
@@ -21,6 +22,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
 }
 export default config

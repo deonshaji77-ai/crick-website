@@ -1,44 +1,9 @@
-import Image from 'next/image';
+import { SafeImage } from './SafeImage';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-const REPAIR_SERVICES = [
-  { 
-    id: "rep-1", 
-    name: "Toe Binding & Repair", 
-    price: "₹850", 
-    turnaround: "2-3 Days",
-    desc: "Fixing split toes with industrial-grade adhesives and durable binding.",
-    image: "/images/split_toe.jpg" 
-  },
-  { 
-    id: "rep-2", 
-    name: "Handle Replacement", 
-    price: "₹1,800", 
-    turnaround: "5-7 Days",
-    desc: "Complete re-handling with premium 12-piece cane handle.",
-    image: "/images/broken_handle.jpg" 
-  },
-  { 
-    id: "rep-3", 
-    name: "Full Refurbishment", 
-    price: "₹2,500", 
-    turnaround: "7-10 Days",
-    desc: "Sanding, re-stickering, threading, and oiling for a brand new look.",
-    image: "/images/leather_bat.jpg" 
-  },
-  { 
-    id: "rep-4", 
-    name: "Edge Repair", 
-    price: "₹600", 
-    turnaround: "2 Days",
-    desc: "Fixing edge cracks and applying fiberglass tape.",
-    image: "/images/split_toe.jpg" 
-  },
-];
-
-export function VisualRepairMenu({ onSelect }: { onSelect: (service: string) => void }) {
+export function VisualRepairMenu({ services, onSelect }: { services: any[], onSelect: (service: string) => void }) {
   return (
     <section className="w-full">
       <div className="mb-8">
@@ -49,7 +14,7 @@ export function VisualRepairMenu({ onSelect }: { onSelect: (service: string) => 
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {REPAIR_SERVICES.map((service) => (
+        {services.map((service) => (
           <Card key={service.id} className="group overflow-hidden border-gray-200 flex flex-col h-full">
             <CardContent className="p-0 relative flex-grow">
               <div className="absolute top-3 left-3 z-10 flex gap-2">
@@ -58,7 +23,7 @@ export function VisualRepairMenu({ onSelect }: { onSelect: (service: string) => 
                 </Badge>
               </div>
               <div className="relative w-full aspect-square bg-gray-100 overflow-hidden">
-                <Image
+                <SafeImage
                   src={service.image}
                   alt={service.name}
                   fill

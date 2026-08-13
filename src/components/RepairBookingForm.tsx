@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { UploadCloud, X, CheckCircle2 } from "lucide-react";
+import { useStore } from "@/lib/StoreContext";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +27,10 @@ const formSchema = z.object({
   serviceType: z.string().min(1, { message: "Please select a service." }),
 });
 
-export function RepairBookingForm({ selectedService }: { selectedService?: string }) {
+export function RepairBookingForm({ services = [], selectedService }: { services?: any[], selectedService?: string }) {
+  const { siteSettings } = useStore();
+  const phone = siteSettings?.whatsappNumber || '919876543210';
+  
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,12 +56,23 @@ export function RepairBookingForm({ selectedService }: { selectedService?: strin
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    // Mock submission process
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-      console.log(values, files);
-    }, 1500);
+    
+    // Construct WhatsApp message
+    let message = `Hello RJ Doctor Bat! I need a bat repair service.\n\n`;
+    message += `Name: ${values.fullName}\n`;
+    message += `Phone: ${values.phone}\n`;
+    message += `Email: ${values.email}\n`;
+    message += `Service Required: ${values.serviceType}\n\n`;
+    
+    if (files.length > 0) {
+      message += `I have ${files.length} photo(s) of the damage ready to share. Please let me know where I can send them for a quote.\n`;
+    }
+    
+    // Redirect to WhatsApp
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+    
+    setIsSubmitting(false);
+    setIsSuccess(true);
   }
 
   const handleDrag = (e: React.DragEvent) => {
@@ -174,10 +189,11 @@ export function RepairBookingForm({ selectedService }: { selectedService?: strin
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Toe Binding & Repair">Toe Binding & Repair (₹850)</SelectItem>
-                    <SelectItem value="Handle Replacement">Handle Replacement (₹1,800)</SelectItem>
-                    <SelectItem value="Full Refurbishment">Full Refurbishment (₹2,500)</SelectItem>
-                    <SelectItem value="Edge Repair">Edge Repair (₹600)</SelectItem>
+                    {services.map((service: any) => (
+                      <SelectItem key={service.id} value={service.name}>
+                        {service.name} ({service.price})
+                      </SelectItem>
+                    ))}
                     <SelectItem value="Other / Not Sure">Other / Not Sure (Quote required)</SelectItem>
                   </SelectContent>
                 </Select>
@@ -228,8 +244,8 @@ export function RepairBookingForm({ selectedService }: { selectedService?: strin
             )}
           </div>
 
-          <Button type="submit" disabled={isSubmitting} className="w-full rounded-full py-6 mt-4 text-sm font-bold uppercase tracking-widest bg-charcoal text-white hover:bg-neon hover:text-charcoal transition-all duration-300 shadow-md">
-            {isSubmitting ? "Submitting..." : "Request Quote"}
+          <Button type="submit" disabled={isSubmitting} className="w-full rounded-full py-6 mt-4 text-sm font-bold uppercase tracking-widest bg-[#25D366] text-white hover:bg-[#1DA851] transition-all duration-300 shadow-md">
+            {isSubmitting ? "Redirecting..." : "Request Quote via WhatsApp"}
           </Button>
         </form>
       </Form>
