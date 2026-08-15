@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getBannersFromFirestore, addBannerToFirestore } from '@/lib/firestore';
+import { revalidatePath } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,6 +32,8 @@ export async function POST(request: Request) {
     };
 
     const id = await addBannerToFirestore(newBanner);
+    
+    revalidatePath('/'); // Revalidate storefront homepage
     
     return NextResponse.json({ id, ...newBanner }, { status: 201 });
   } catch (error) {

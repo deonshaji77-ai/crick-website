@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { deleteBannerFromFirestore } from '@/lib/firestore';
+import { revalidatePath } from 'next/cache';
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   try {
@@ -9,6 +10,8 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     }
 
     await deleteBannerFromFirestore(id);
+    
+    revalidatePath('/'); // Revalidate storefront homepage
     
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {

@@ -13,7 +13,7 @@ export default function HeroCarousel() {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const res = await fetch('/api/banners');
+        const res = await fetch('/api/banners', { cache: 'no-store' });
         const data = await res.json();
         setBanners(Array.isArray(data) ? data : []);
       } catch (error) {
