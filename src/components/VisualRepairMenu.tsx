@@ -13,9 +13,9 @@ export function VisualRepairMenu({ services, onSelect }: { services: any[], onSe
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="flex overflow-x-auto snap-x sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 pb-6 md:pb-0 -mx-4 px-4 md:px-0 hide-scrollbar">
         {services.map((service) => (
-          <Card key={service.id} className="group overflow-hidden border-gray-200 flex flex-col h-full">
+          <Card key={service.id} className="w-[75vw] flex-shrink-0 snap-center sm:w-auto group overflow-hidden border-gray-200 flex flex-col h-full">
             <CardContent className="p-0 relative flex-grow">
               <div className="absolute top-3 left-3 z-10 flex gap-2">
                 <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm text-xs font-semibold text-charcoal">
@@ -39,7 +39,7 @@ export function VisualRepairMenu({ services, onSelect }: { services: any[], onSe
             <CardFooter className="p-5 pt-0 border-t-0">
               <Button 
                 variant="outline" 
-                className="w-full border-gray-300 hover:bg-neon hover:text-charcoal transition-colors"
+                className="w-full border-gray-300 hover:bg-neon hover:text-charcoal transition-colors min-h-[44px]"
                 onClick={() => onSelect(service.name)}
               >
                 Select Service

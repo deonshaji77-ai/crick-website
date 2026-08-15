@@ -62,9 +62,9 @@ export default function KnockingPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      <div className="flex overflow-x-auto snap-x md:grid md:grid-cols-2 gap-4 md:gap-8 max-w-5xl mx-auto pb-6 md:pb-0 -mx-4 px-4 md:px-0 hide-scrollbar">
         {services.map((service) => (
-          <Card key={service.id} className={`relative !overflow-visible flex flex-col ${service.highlight ? 'border-charcoal shadow-xl' : 'border-gray-200'}`}>
+          <Card key={service.id} className={`w-[85vw] flex-shrink-0 snap-center md:w-auto relative !overflow-visible flex flex-col ${service.highlight ? 'border-charcoal shadow-xl' : 'border-gray-200'}`}>
             {/* Watermark Image */}
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-xl opacity-25 mix-blend-multiply">
               <Image 
@@ -76,17 +76,17 @@ export default function KnockingPage() {
             </div>
             
             {service.highlight && (
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-neon text-charcoal text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full">
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-neon text-charcoal text-[10px] md:text-xs font-bold uppercase tracking-widest px-3 md:px-4 py-1 rounded-full">
                 Most Popular
               </div>
             )}
-            <CardHeader className="text-center pt-10 pb-6 relative z-10">
-              <CardTitle className="text-3xl mb-4">{service.title}</CardTitle>
-              <div className="text-5xl font-sans font-medium mb-4">{service.price}</div>
-              <CardDescription className="text-base">{service.description}</CardDescription>
+            <CardHeader className="text-center pt-8 md:pt-10 pb-4 md:pb-6 relative z-10 px-6 md:px-10">
+              <CardTitle className="text-2xl md:text-3xl mb-2 md:mb-4">{service.title}</CardTitle>
+              <div className="text-4xl md:text-5xl font-sans font-medium mb-2 md:mb-4">{service.price}</div>
+              <CardDescription className="text-sm md:text-base">{service.description}</CardDescription>
             </CardHeader>
-            <CardContent className="flex-1 px-10 relative z-10">
-              <ul className="space-y-4">
+            <CardContent className="flex-1 px-6 md:px-10 relative z-10">
+              <ul className="space-y-3 md:space-y-4">
                 {service.features.map((feature: any, i: number) => (
                   <li key={i} className="flex items-center gap-3 text-sm font-medium text-gray-600">
                     <Check className="w-5 h-5 text-green-500 shrink-0" />
@@ -95,7 +95,7 @@ export default function KnockingPage() {
                 ))}
               </ul>
             </CardContent>
-            <CardFooter className="p-10 pt-6 relative z-10">
+            <CardFooter className="p-6 md:p-10 pt-4 md:pt-6 relative z-10">
               <Button 
                 variant={service.highlight ? "default" : "outline"} 
                 className={`w-full h-14 text-sm tracking-widest uppercase font-bold rounded-full ${!service.highlight ? 'bg-white hover:bg-gray-50 border-gray-200 text-charcoal' : ''}`}
@@ -112,7 +112,7 @@ export default function KnockingPage() {
       {bookingModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setBookingModalOpen(null)} />
-          <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-8 animate-in fade-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 md:p-8 animate-in fade-in zoom-in-95 duration-200">
             <button onClick={() => setBookingModalOpen(null)} className="absolute top-6 right-6 p-2 text-gray-400 hover:text-charcoal transition-colors">
               <X className="w-6 h-6" />
             </button>

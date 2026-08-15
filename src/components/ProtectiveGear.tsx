@@ -116,7 +116,7 @@ export function ProtectiveGear({ products, categories }: ProtectiveGearProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
         {filteredGear.map((item) => (
           <Card 
             key={item.id} 
@@ -140,34 +140,34 @@ export function ProtectiveGear({ products, categories }: ProtectiveGearProps) {
                 />
               </div>
             </CardContent>
-            <CardFooter className="p-5 flex flex-col gap-2 bg-white flex-1 rounded-b-2xl">
-              <h3 className="font-sans font-bold text-lg text-charcoal leading-tight w-full">{item.name}</h3>
+            <CardFooter className="p-3 md:p-5 flex flex-col gap-2 bg-white flex-1 rounded-b-2xl">
+              <h3 className="font-sans font-bold text-sm md:text-lg text-charcoal leading-tight w-full truncate">{item.name}</h3>
               
               {/* Pricing Row */}
-              <div className="flex items-center gap-2 mt-auto w-full pb-4">
+              <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mt-auto w-full pb-3 md:pb-4">
                 {item.discount && (
-                  <span className="text-[#00B167] font-bold text-sm flex items-center">
+                  <span className="text-[#00B167] font-bold text-[10px] md:text-sm flex items-center bg-[#00B167]/10 px-1.5 md:px-2 py-0.5 rounded">
                     ↓ {item.discount}
                   </span>
                 )}
                 {item.originalPrice && (
-                  <span className="text-gray-400 line-through text-sm">
+                  <span className="text-gray-400 line-through text-xs md:text-sm">
                     {item.originalPrice}
                   </span>
                 )}
-                <span className="font-sans font-black text-xl text-charcoal ml-auto">
+                <span className="font-sans font-black text-base md:text-xl text-charcoal ml-auto">
                   {item.price}
                 </span>
               </div>
               
               {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-2 mt-auto w-full">
+              <div className="flex flex-col gap-2 mt-auto w-full">
                 <Button 
                   onClick={(e) => {
                     e.stopPropagation();
                     addToCart(item);
                   }}
-                  className="w-full bg-charcoal text-white rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-neon hover:text-charcoal transition-colors"
+                  className="w-full bg-charcoal text-white rounded-xl font-bold uppercase tracking-widest text-[10px] sm:text-xs hover:bg-neon hover:text-charcoal transition-colors min-h-[44px]"
                 >
                   Add to Cart
                 </Button>
@@ -188,7 +188,7 @@ export function ProtectiveGear({ products, categories }: ProtectiveGearProps) {
                     const message = `Hello RJ Doctor Bat! I am interested in buying the ${item.name} (${item.category}). Price: ${item.price}. Please let me know the process.`;
                     window.open(`https://wa.me/919876543210?text=${encodeURIComponent(message)}`, '_blank');
                   }}
-                  className="w-full bg-[#25D366] text-white rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-[#1DA851] transition-colors"
+                  className="w-full bg-[#25D366] text-white rounded-xl font-bold uppercase tracking-widest text-[10px] sm:text-xs hover:bg-[#1DA851] transition-colors min-h-[44px]"
                 >
                   Buy Now
                 </Button>

@@ -264,8 +264,8 @@ export default function Navbar() {
       {/* Slide-out Cart Drawer */}
       {isCartOpen && (
         <div className="fixed inset-0 z-[100] flex justify-end">
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsCartOpen(false)} />
-          <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-md" onClick={() => setIsCartOpen(false)} />
+          <div className="relative w-[85vw] md:w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
             
             <div className="flex items-center justify-between p-6 border-b border-gray-100">
               <h2 className="font-sans text-2xl font-black text-charcoal">Your Cart</h2>
