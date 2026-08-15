@@ -474,3 +474,46 @@ export const deleteKnockingTierFromFirestore = async (id: string) => {
     throw error;
   }
 };
+
+// --- REPAIR SERVICES ---
+export interface RepairServiceData {
+  name: string;
+  turnaroundTime: string;
+  basePrice: string | number;
+  imageReference?: string;
+}
+
+export const addRepairServiceToFirestore = async (data: RepairServiceData) => {
+  try {
+    const docRef = await addDoc(collection(db, 'repairs_services'), data);
+    return docRef.id;
+  } catch (error) {
+    console.error('Error adding repair service: ', error);
+    throw error;
+  }
+};
+
+export const getRepairServicesFromFirestore = async () => {
+  try {
+    const q = query(collection(db, 'repairs_services'));
+    const querySnapshot = await getDocs(q);
+    const repairs: any[] = [];
+    querySnapshot.forEach((doc) => {
+      repairs.push({ id: doc.id, ...doc.data() });
+    });
+    return repairs;
+  } catch (error) {
+    console.error('Error fetching repair services: ', error);
+    throw error;
+  }
+};
+
+export const deleteRepairServiceFromFirestore = async (id: string) => {
+  try {
+    const docRef = doc(db, 'repairs_services', id);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error('Error deleting repair service: ', error);
+    throw error;
+  }
+};
