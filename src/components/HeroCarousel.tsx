@@ -9,6 +9,8 @@ export default function HeroCarousel() {
   const [banners, setBanners] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchBanners = async () => {
@@ -45,6 +47,19 @@ export default function HeroCarousel() {
   const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % displayBanners.length);
   const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + displayBanners.length) % displayBanners.length);
 
+  const handleTouchStart = (e: React.TouchEvent) => setTouchStart(e.targetTouches[0].clientX);
+  const handleTouchMove = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX);
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    if (isLeftSwipe) nextSlide();
+    if (isRightSwipe) prevSlide();
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
   const getTargetLink = (banner: any) => {
     if (banner.target_type === 'product' && banner.target_id) {
       return `/shop?product_id=${banner.target_id}`;
@@ -56,7 +71,12 @@ export default function HeroCarousel() {
   };
 
   return (
-    <div className="relative w-full h-[300px] md:h-[500px] lg:h-[600px] overflow-hidden group border-b border-gray-100 shadow-inner bg-slate-900">
+    <div 
+      className="relative w-full aspect-[16/9] overflow-hidden group border-b border-gray-100 shadow-inner bg-slate-900"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <div 
         className="flex h-full transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -80,6 +100,7 @@ export default function HeroCarousel() {
                 src={banner.image_url} 
                 alt={`Banner ${index + 1}`} 
                 className="w-full h-full object-cover"
+                loading={index === 0 ? "eager" : "lazy"}
               />
             </ImageWrapper>
           );
@@ -90,29 +111,33 @@ export default function HeroCarousel() {
         <>
           <Button 
             variant="ghost" 
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 w-10 h-10 md:w-12 md:h-12 opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 w-10 h-10 md:w-12 md:h-12 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex"
             onClick={prevSlide}
           >
             <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
           </Button>
           <Button 
             variant="ghost" 
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 w-10 h-10 md:w-12 md:h-12 opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 w-10 h-10 md:w-12 md:h-12 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex"
             onClick={nextSlide}
           >
             <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
           </Button>
 
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1 items-center">
             {displayBanners.map((_, index) => (
               <button
                 key={index}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
-                  index === currentIndex ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'
-                }`}
+                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none"
                 onClick={() => setCurrentIndex(index)}
                 aria-label={`Go to slide ${index + 1}`}
-              />
+              >
+                <div 
+                  className={`w-2.5 h-2.5 rounded-full transition-all ${
+                    index === currentIndex ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'
+                  }`}
+                />
+              </button>
             ))}
           </div>
         </>

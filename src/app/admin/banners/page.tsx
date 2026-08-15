@@ -195,16 +195,16 @@ export default function BannersPage() {
       <div className="grid grid-cols-1 gap-6">
         {banners.map((banner) => (
           <Card key={banner.id}>
-            <CardContent className="p-6 flex flex-col md:flex-row gap-6 items-center">
+            <CardContent className="p-6 flex flex-col md:flex-row gap-6 items-start md:items-center">
               <img src={banner.image_url} alt="Banner" className="w-full md:w-64 h-32 object-cover rounded-lg" />
-              <div className="flex-1">
+              <div className="flex-1 w-full">
                 <p className="font-bold text-lg">Type: <span className="capitalize">{banner.target_type}</span></p>
-                {banner.target_id && <p className="text-gray-500">Target ID: {banner.target_id}</p>}
+                {banner.target_id && <p className="text-gray-500 truncate">Target ID: {banner.target_id}</p>}
                 <p className="text-gray-500">Order: {banner.display_order}</p>
                 <p className="text-sm mt-2 font-medium">Status: {banner.is_active ? <span className="text-green-600">Active</span> : <span className="text-red-600">Inactive</span>}</p>
               </div>
-              <Button variant="destructive" size="icon" onClick={() => handleDelete(banner.id)}>
-                <Trash2 className="w-4 h-4" />
+              <Button variant="destructive" className="w-full md:w-auto mt-4 md:mt-0 py-6 md:py-2" onClick={() => handleDelete(banner.id)}>
+                <Trash2 className="w-5 h-5 md:w-4 md:h-4 mr-2" /> Delete
               </Button>
             </CardContent>
           </Card>
