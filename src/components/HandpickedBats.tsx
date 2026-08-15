@@ -135,13 +135,13 @@ function BatCard({ bat }: { bat: any }) {
             {bat.category}
           </span>
         </div>
-        <div className="relative w-full aspect-[4/5] bg-[#F5F8F5] overflow-hidden rounded-t-2xl">
+        <div className="relative w-full aspect-square bg-[#F5F8F5] overflow-hidden rounded-t-2xl flex items-center justify-center p-4">
           <Image
             src={getOptimizedCloudinaryUrl(bat.image) || '/images/tennis_bat.jpg'}
             alt={bat.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+            className="object-contain object-center transition-transform duration-700 group-hover:scale-105 p-4"
           />
         </div>
         <div className="p-3 md:p-5 flex flex-col gap-3 md:gap-4 bg-white flex-1 border-t border-gray-50">

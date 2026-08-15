@@ -129,14 +129,14 @@ export function ProtectiveGear({ products, categories }: ProtectiveGearProps) {
                   {item.category}
                 </span>
               </div>
-              <div className="relative w-full aspect-square bg-[#F5F8F5] overflow-hidden flex-1 rounded-t-2xl">
+              <div className="relative w-full aspect-square bg-[#F5F8F5] overflow-hidden flex-1 rounded-t-2xl flex items-center justify-center p-4">
                 <Image
                   src={getOptimizedCloudinaryUrl(item.image) || '/images/batting_gloves.jpg'}
                   alt={item.name}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                   loading="lazy"
-                  className="object-cover object-center mix-blend-multiply transition-transform duration-700 group-hover:scale-105"
+                  className="object-contain object-center mix-blend-multiply transition-transform duration-700 group-hover:scale-105 p-4"
                 />
               </div>
             </CardContent>
