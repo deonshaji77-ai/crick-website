@@ -19,9 +19,15 @@ export default function KnockingManager() {
     try {
       const res = await fetch('/api/admin/knocking');
       const data = await res.json();
-      setTiers(data);
+      if (Array.isArray(data)) {
+        setTiers(data);
+      } else {
+        console.error('Expected array for tiers, got:', data);
+        setTiers([]);
+      }
     } catch (err) {
-      console.error(err);
+      console.error('Failed to fetch tiers:', err);
+      setTiers([]);
     }
   };
 
