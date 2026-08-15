@@ -56,7 +56,9 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       <aside
         className={cn(
           "fixed left-0 top-0 z-40 h-screen border-r border-slate-200 bg-white transition-all duration-300 ease-in-out flex flex-col",
-          collapsed ? "w-[68px]" : "w-60"
+          // On mobile, completely hide if collapsed. If not collapsed, take w-60.
+          // On desktop, take w-[68px] if collapsed, else w-60.
+          collapsed ? "-translate-x-full md:translate-x-0 md:w-[68px]" : "translate-x-0 w-60"
         )}
       >
         <div className="flex h-16 items-center justify-between border-b border-slate-200 px-4 shrink-0">

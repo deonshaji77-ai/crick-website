@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export default function AdminLayout({
   children,
@@ -171,14 +172,27 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-50">
+    <div className="flex h-screen overflow-hidden bg-slate-50 relative">
+      {/* Mobile Overlay */}
+      {!collapsed && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 md:hidden" 
+          onClick={() => setCollapsed(true)} 
+        />
+      )}
+      
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
+      
       <div
-        className="flex flex-1 flex-col overflow-hidden transition-all duration-300"
-        style={{ marginLeft: collapsed ? "68px" : "240px" }}
+        className={cn(
+          "flex flex-1 flex-col overflow-hidden transition-all duration-300 w-full",
+          collapsed ? "md:ml-[68px]" : "md:ml-[240px]"
+        )}
       >
-        <Topbar />
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+        <Topbar onToggleSidebar={() => setCollapsed(!collapsed)} />
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 w-full max-w-[100vw] overflow-x-hidden">
+          {children}
+        </main>
       </div>
     </div>
   );
