@@ -432,3 +432,45 @@ export const deleteBannerFromFirestore = async (id: string) => {
     throw error;
   }
 };
+
+// --- KNOCKING TIERS ---
+export interface KnockingTierData {
+  name: string;
+  price: number;
+  features: { id: string; description: string }[];
+}
+
+export const addKnockingTierToFirestore = async (data: KnockingTierData) => {
+  try {
+    const docRef = await addDoc(collection(db, 'knocking_tiers'), data);
+    return docRef.id;
+  } catch (error) {
+    console.error('Error adding knocking tier: ', error);
+    throw error;
+  }
+};
+
+export const getKnockingTiersFromFirestore = async () => {
+  try {
+    const q = query(collection(db, 'knocking_tiers'));
+    const querySnapshot = await getDocs(q);
+    const tiers: any[] = [];
+    querySnapshot.forEach((doc) => {
+      tiers.push({ id: doc.id, ...doc.data() });
+    });
+    return tiers;
+  } catch (error) {
+    console.error('Error fetching knocking tiers: ', error);
+    throw error;
+  }
+};
+
+export const deleteKnockingTierFromFirestore = async (id: string) => {
+  try {
+    const docRef = doc(db, 'knocking_tiers', id);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error('Error deleting knocking tier: ', error);
+    throw error;
+  }
+};
