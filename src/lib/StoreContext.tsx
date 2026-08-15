@@ -114,71 +114,46 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       }
     };
     
-    const fetchDatabaseProducts = async () => {
+    const fetchData = async () => {
+      // 1. Fetch Products
       try {
         const dbProducts = await getProductsFromFirestore();
         if (dbProducts && dbProducts.length > 0) {
-          const mapped = dbProducts.map((p: any) => {
-            const weight = p.specifications?.find((s:any) => s.key.toLowerCase() === 'weight')?.value;
-            const edge = p.specifications?.find((s:any) => s.key.toLowerCase() === 'edge')?.value;
-            
-            let storeCategory = p.category;
-            if (p.category === 'Leather Ball Bats') storeCategory = 'Leather Bat';
-            if (p.category === 'Tennis Ball Bats') storeCategory = 'Tennis Bat';
-            if (p.category === 'Batting Gloves') storeCategory = 'Gloves';
-            if (p.category === 'Batting Pads') storeCategory = 'Pads';
-
-            return {
-              id: p.id,
-              name: p.name,
-              price: `₹${p.basePrice.toLocaleString('en-IN')}`,
-              category: storeCategory,
-              categorySlug: p.categorySlug,
-              image: p.image,
-              weight: weight,
-              edge: edge,
-              isSoldOut: false
-            };
-          });
-          setProducts(mapped);
-          setCommunity(load('rj doctor bat_community_v2', DEFAULT_COMMUNITY));
-          setIsLoaded(true);
-          return;
+          setProducts(dbProducts);
+        } else {
+          setProducts(load('rj doctor bat_products_v2', DEFAULT_PRODUCTS));
         }
       } catch (err) {
-        console.error("Failed to sync with DB", err);
+        console.error("Failed to sync products with DB", err);
+        setProducts(load('rj doctor bat_products_v2', DEFAULT_PRODUCTS));
       }
       
+      setCommunity(load('rj doctor bat_community_v2', DEFAULT_COMMUNITY));
+      
+      // 2. Fetch Settings
+      const defaultSettings = {
+        whatsappNumber: "919876543210",
+        storeAddress: "123 Cricket Lane, Mumbai, India",
+        contactEmail: "support@rj doctor bat.com",
+        businessHours: "Mon-Sat, 10 AM - 8 PM"
+      };
+
       try {
         const settings = await getSiteSettingsFromFirestore();
         if (settings) {
           setSiteSettings(settings);
         } else {
-          // Fallback default settings
-          setSiteSettings({
-            whatsappNumber: "919876543210",
-            storeAddress: "123 Cricket Lane, Mumbai, India",
-            contactEmail: "support@rj doctor bat.com",
-            businessHours: "Mon-Sat, 10 AM - 8 PM"
-          });
+          setSiteSettings(defaultSettings);
         }
       } catch (err) {
         console.error("Failed to sync settings", err);
-        setSiteSettings({
-          whatsappNumber: "919876543210",
-          storeAddress: "123 Cricket Lane, Mumbai, India",
-          contactEmail: "support@rj doctor bat.com",
-          businessHours: "Mon-Sat, 10 AM - 8 PM"
-        });
+        setSiteSettings(defaultSettings);
       }
       
-      // Fallback to local storage if DB is empty or fails
-      setProducts(load('rj doctor bat_products_v2', DEFAULT_PRODUCTS));
-      setCommunity(load('rj doctor bat_community_v2', DEFAULT_COMMUNITY));
       setIsLoaded(true);
     };
 
-    fetchDatabaseProducts();
+    fetchData();
   }, []);
 
   useEffect(() => {

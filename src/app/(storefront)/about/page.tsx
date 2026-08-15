@@ -46,11 +46,15 @@ export default function AboutPage() {
               We don't just sell bats; we curate them. Every piece of willow in our 'Handpicked Collection' is personally inspected, weighed, and knocked to perfection. Whether you are playing on weekends or walking out to open in a professional league, we ensure you have the best tools in your arsenal.
             </p>
           </div>
-          <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl">
-            <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-              <span className="text-gray-400 font-bold uppercase tracking-widest border border-gray-300 px-6 py-3 rounded">Workshop Image</span>
+          <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl bg-white border border-gray-100 flex items-center justify-center">
+            <div className="relative h-full w-full">
+              <Image 
+                src="/images/logo.png" 
+                alt="RJ Doctor Bat Logo" 
+                fill 
+                className="object-contain scale-[1.3] md:scale-[1.8]" 
+              />
             </div>
-            {/* If there was a real image: <Image src="/images/workshop.jpg" alt="Workshop" fill className="object-cover" /> */}
           </div>
         </div>
       </section>

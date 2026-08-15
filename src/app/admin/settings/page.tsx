@@ -32,6 +32,8 @@ export default function SettingsPage() {
             storeAddress: "123 Cricket Lane, Mumbai, India",
             contactEmail: "support@rj doctor bat.com",
             businessHours: "Mon-Sat, 10 AM - 8 PM",
+            instagramUrl: "",
+            youtubeUrl: "",
           });
         }
       } catch (err) {
@@ -132,6 +134,29 @@ export default function SettingsPage() {
                         onChange={(e) => setFormData({...formData, businessHours: e.target.value})}
                         placeholder="Mon-Sat, 10 AM - 8 PM"
                         required
+                        className="bg-slate-50"
+                      />
+                    </div>                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="instagramUrl" className="text-charcoal font-semibold">Instagram Profile URL</Label>
+                      <Input 
+                        id="instagramUrl"
+                        value={formData.instagramUrl || ''}
+                        onChange={(e) => setFormData({...formData, instagramUrl: e.target.value})}
+                        placeholder="https://instagram.com/rjdoctorbat"
+                        className="bg-slate-50"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="youtubeUrl" className="text-charcoal font-semibold">YouTube Channel URL</Label>
+                      <Input 
+                        id="youtubeUrl"
+                        value={formData.youtubeUrl || ''}
+                        onChange={(e) => setFormData({...formData, youtubeUrl: e.target.value})}
+                        placeholder="https://youtube.com/@rjdoctorbat"
                         className="bg-slate-50"
                       />
                     </div>

@@ -84,7 +84,29 @@ export const getProductsFromFirestore = async () => {
     const querySnapshot = await getDocs(q);
     const products: any[] = [];
     querySnapshot.forEach((doc) => {
-      products.push({ id: doc.id, ...doc.data() });
+      const data = doc.data();
+      
+      // Parse dynamic specifications
+      const weight = data.specifications?.find((s:any) => s.key.toLowerCase() === 'weight')?.value;
+      const edge = data.specifications?.find((s:any) => s.key.toLowerCase() === 'edge')?.value;
+      
+      // Map categories
+      let storeCategory = data.category;
+      if (data.category === 'Leather Ball Bats') storeCategory = 'Leather Bat';
+      if (data.category === 'Tennis Ball Bats') storeCategory = 'Tennis Bat';
+      if (data.category === 'Batting Gloves') storeCategory = 'Gloves';
+      if (data.category === 'Batting Pads') storeCategory = 'Pads';
+
+      products.push({ 
+        id: doc.id, 
+        ...data,
+        price: data.basePrice ? `₹${data.basePrice.toLocaleString('en-IN')}` : "₹0",
+        originalPrice: data.originalPrice ? `₹${data.originalPrice.toLocaleString('en-IN')}` : undefined,
+        category: storeCategory,
+        weight: weight,
+        edge: edge,
+        isSoldOut: false
+      });
     });
     return products;
   } catch (error) {
@@ -258,6 +280,8 @@ export interface SiteSettingsData {
   storeAddress: string;
   contactEmail: string;
   businessHours: string;
+  instagramUrl?: string;
+  youtubeUrl?: string;
 }
 
 export const getSiteSettingsFromFirestore = async (): Promise<SiteSettingsData | null> => {
@@ -329,6 +353,82 @@ export const deleteReviewFromFirestore = async (id: string) => {
     await deleteDoc(docRef);
   } catch (error) {
     console.error('Error deleting review: ', error);
+    throw error;
+  }
+};
+
+// ---------------- BANNERS ---------------- //
+export interface BannerData {
+  image_url: string;
+  target_type: 'product' | 'category' | 'custom';
+  target_id: string;
+  is_active: boolean;
+  display_order: number;
+  createdAt?: string;
+}
+
+export const addBannerToFirestore = async (data: BannerData) => {
+  try {
+    const docRef = await addDoc(collection(db, 'banners'), {
+      ...data,
+      createdAt: new Date().toISOString()
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error('Error adding banner: ', error);
+    throw error;
+  }
+};
+
+export const getBannersFromFirestore = async () => {
+  try {
+    const q = query(collection(db, 'banners'), orderBy('display_order', 'asc'));
+    const querySnapshot = await getDocs(q);
+    const banners: any[] = [];
+    querySnapshot.forEach((doc) => {
+      banners.push({ id: doc.id, ...doc.data() });
+    });
+    return banners;
+  } catch (error) {
+    console.error('Error fetching banners: ', error);
+    throw error;
+  }
+};
+
+export const getPublicBannersFromFirestore = async () => {
+  try {
+    const q = query(collection(db, 'banners'), orderBy('display_order', 'asc'));
+    const querySnapshot = await getDocs(q);
+    const banners: any[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.is_active !== false) {
+        banners.push({ id: doc.id, ...data });
+      }
+    });
+    return banners;
+  } catch (error) {
+    console.error('Error fetching public banners: ', error);
+    throw error;
+  }
+};
+
+export const updateBannerInFirestore = async (id: string, data: Partial<BannerData>) => {
+  try {
+    const docRef = doc(db, 'banners', id);
+    await updateDoc(docRef, data);
+  } catch (error) {
+    console.error('Error updating banner: ', error);
+    throw error;
+  }
+};
+
+export const deleteBannerFromFirestore = async (id: string) => {
+  try {
+    const docRef = doc(db, 'banners', id);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error('Error deleting banner: ', error);
     throw error;
   }
 };

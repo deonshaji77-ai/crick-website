@@ -23,8 +23,9 @@ export default function Navbar() {
   const router = useRouter();
   
   const cartTotal = cart.reduce((total, item) => {
-    // Basic string parse for total calculation (assuming ₹x,xxx format)
-    const priceNum = parseInt(item.product.price.replace(/[^\d]/g, ''));
+    // Fault-tolerant string parse for total calculation (assuming ₹x,xxx format)
+    const rawPrice = item.product?.price || "0";
+    const priceNum = parseInt(rawPrice.toString().replace(/[^\d]/g, ''), 10) || 0;
     return total + (priceNum * item.quantity);
   }, 0);
 
@@ -70,8 +71,8 @@ export default function Navbar() {
 
           {/* Logo & Badge */}
           <div className="flex items-center gap-2">
-            <Link href="/" className="font-sans text-2xl md:text-3xl font-black italic tracking-tighter text-charcoal">
-              RJ Dr. bat
+            <Link href="/" className="font-sans text-2xl md:text-3xl font-black italic tracking-tighter text-charcoal flex items-baseline">
+              RJ <span className="text-neon ml-1">Dr. bat</span>
             </Link>
             <span className="bg-neon text-charcoal text-xs md:text-sm font-bold px-2 py-0.5 rounded-full tracking-wide">
               Store

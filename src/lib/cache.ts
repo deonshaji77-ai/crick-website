@@ -5,7 +5,7 @@ export const getCachedProducts = unstable_cache(
   async () => {
     return await getProductsFromFirestore();
   },
-  ['products-cache'],
+  ['products-cache-v2'],
   { revalidate: 300, tags: ['products'] }
 );
 

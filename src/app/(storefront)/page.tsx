@@ -8,6 +8,7 @@ import { HeroWhatsAppButton } from "@/components/WhatsAppButton";
 import { getCachedActiveCategories, getCachedProducts, getCachedReviews, getCachedSettings } from "@/lib/cache";
 import { getOptimizedCloudinaryUrl } from "@/lib/cloudinary";
 import SocialProof from "@/components/SocialProof";
+import HeroCarousel from "@/components/HeroCarousel";
 
 export default async function Home() {
   const [categories, products, reviews, settings] = await Promise.all([
@@ -86,13 +87,18 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Hero Banner Carousel */}
+      <div className="pt-4">
+        <HeroCarousel />
+      </div>
+
       {/* 2. Shop By Category Grid */}
       <section className="py-20 bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center">
           <p className="text-neon-green text-sm font-bold uppercase tracking-[0.2em] mb-2 text-[#B89B2B]">Shop By Category</p>
-          <h2 className="font-sans text-3xl md:text-4xl font-black text-charcoal mb-12 uppercase">Our Top Picks</h2>
+          <h2 className="font-sans text-3xl md:text-4xl font-black text-charcoal mb-12 uppercase">Our Top Category</h2>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-12">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
             {categories.slice(0, 8).map((cat: any, i: number) => {
               const minPrice = getMinPrice(cat.slug);
               // Route to /bats or /store based on funnel
@@ -139,8 +145,21 @@ export default async function Home() {
       </section>
 
       {/* 3. Services & Custom Builds Showcase (3-Column Layout) */}
-      <section className="py-20 bg-charcoal text-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+      <section className="relative py-24 bg-charcoal text-white overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-800/40 via-charcoal to-charcoal z-0"></div>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon/5 rounded-full blur-[100px] z-0 -translate-y-1/2 translate-x-1/3"></div>
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-neon/5 rounded-full blur-[100px] z-0 translate-y-1/2 -translate-x-1/3"></div>
+        <div className="absolute inset-0 bg-[url('/images/noise.png')] opacity-[0.03] mix-blend-overlay z-0 pointer-events-none"></div>
+        
+        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+          
+          <div className="text-center mb-16">
+            <p className="text-neon text-sm font-bold uppercase tracking-[0.2em] mb-3">Master Your Craft</p>
+            <h2 className="font-sans text-3xl md:text-5xl font-black text-white uppercase tracking-tight">Premium Services <span className="text-gray-500 font-light">&</span> Custom Builds</h2>
+            <div className="w-24 h-1.5 bg-neon mx-auto mt-8 rounded-full opacity-80 shadow-[0_0_15px_rgba(212,175,55,0.5)]"></div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             
             {/* Column 1: Surgery List */}

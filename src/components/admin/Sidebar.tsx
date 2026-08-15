@@ -17,6 +17,7 @@ import {
   PenTool,
   MessageSquare,
   Instagram,
+  Layout,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -31,6 +32,7 @@ const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Inventory", href: "/admin/inventory", icon: Package },
   { label: "Categories", href: "/admin/categories", icon: Tags },
+  { label: "Banners", href: "/admin/banners", icon: Layout },
   { label: "Gallery", href: "/admin/gallery", icon: ImageIcon },
   { label: "Knocking", href: "/admin/knocking", icon: Hammer },
   { label: "Repairs", href: "/admin/repairs", icon: Wrench },
